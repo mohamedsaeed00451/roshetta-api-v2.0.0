@@ -29,9 +29,34 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         $this->routes(function () {
+
             Route::middleware('api')
-                ->prefix('api')
+                ->prefix('api/v1')
                 ->group(base_path('routes/api.php'));
+
+            Route::middleware('api')
+                ->prefix('api/v1/auth')
+                ->group(base_path('routes/api/auth.php'));
+
+            Route::middleware('admin')
+                ->prefix('api/v1/admin')
+                ->group(base_path('routes/api/admin.php'));
+
+            Route::middleware('doctor')
+                ->prefix('api/v1/doctor')
+                ->group(base_path('routes/api/doctor.php'));
+
+            Route::middleware('patient')
+                ->prefix('api/v1/patient')
+                ->group(base_path('routes/api/patient.php'));
+
+            Route::middleware('pharmacist')
+                ->prefix('api/v1/pharmacist')
+                ->group(base_path('routes/api/pharmacist.php'));
+
+            Route::middleware('assistant')
+                ->prefix('api/v1/assistant')
+                ->group(base_path('routes/api/assistant.php'));
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
