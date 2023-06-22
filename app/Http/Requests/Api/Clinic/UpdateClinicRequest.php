@@ -22,9 +22,8 @@ class UpdateClinicRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'clinic_id' => 'bail|required|int|exists:clinics,id',
             'name' => 'bail|required|regex:/^[\p{Arabic}\p{L}\s]+$/u|min:5|max:50',
-            'phone' => 'bail|required|regex:/^[1-9]\d{9}$/|unique:clinics,phone,'.$this->clinic_id,
+            'phone' => 'bail|required|regex:/^[1-9]\d{9}$/|unique:clinics,phone,'.$this->id,
             'governorate_id' => 'bail|required|int|exists:governorates,id',
             'specialist_id' => 'bail|required|int|exists:specialists,id',
             'price' => 'bail|required|numeric',

@@ -6,7 +6,7 @@ trait DoctorTrait
 {
     public function getClinic($doctor,$clinic_id)
     {
-        $clinic = $doctor->clinic()->where('id',$clinic_id)->first();
+        $clinic = $doctor->clinics()->where('id',$clinic_id)->first();
         if (!$clinic)
             return false;
 

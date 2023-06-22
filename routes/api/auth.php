@@ -17,47 +17,47 @@ use Illuminate\Support\Facades\Route;
 Route::group([
 
     'controller' => AuthController::class,
-    'middleware' => ['check.language','check.api.password']
+    'middleware' => ['check.language', 'check.api.password']
 
 ], function () {
 
     //*********************** Register *************************//
-    Route::post('/register','register');
+    Route::post('/register', 'register');
     //*********************** Send Email Verification Code *************************//
-    Route::post('/send-email-otp','sendEmailOtpVerification');
+    Route::post('/send-email-otp', 'sendEmailOtpVerification');
     //*********************** Send Phone Verification Code *************************//
-    Route::post('/send-phone-otp','sendPhoneOtpVerification');
+    Route::post('/send-phone-otp', 'sendPhoneOtpVerification');
     //*********************** Login *************************//
-    Route::post('/login','login');
+    Route::post('/login/{type}', 'login')->whereIn('type', getTypesForRoute());
     //*********************** Reset Password *************************//
-    Route::post('/reset-password','resetPassword');
+    Route::put('/password/reset/{type}', 'resetPassword')->whereIn('type', getTypesForRoute());
 
     //*********************** Specialists *************************//
-    Route::get('/specialists','getSpecialists');
+    Route::get('/specialists', 'getSpecialists');
     //*********************** Genders *************************//
-    Route::get('/genders','getGenders');
+    Route::get('/genders', 'getGenders');
     //*********************** Governorates *************************//
-    Route::get('/governorates','getGovernorates');
+    Route::get('/governorates', 'getGovernorates');
 
 
-    Route::middleware(['jwt.verify','check.account.status'])->group(function (){
+    Route::middleware(['jwt.verify', 'check.account.status'])->group(function () {
 
         //*********************** Profile *************************//
-        Route::post('/profile', 'profile');
+        Route::get('/profile/{type}', 'profile')->whereIn('type', getTypesForRoute());
         //*********************** Logout *************************//
-        Route::post('/logout', 'logout');
+        Route::post('/logout/{type}', 'logout')->whereIn('type', getTypesForRoute());
         //*********************** Refresh Token *************************//
-        Route::post('/refresh-token', 'refresh');
+        Route::post('/refresh-token/{type}', 'refresh')->whereIn('type', getTypesForRoute());
         //*********************** Update Image *************************//
-        Route::post('/update-image', 'updateProfileImage');
+        Route::post('/image/edit/{type}', 'updateProfileImage')->whereIn('type', getTypesForRoute());
         //*********************** Delete Image *************************//
-        Route::post('/delete-image', 'deleteProfileImage');
+        Route::delete('/image/delete/{type}', 'deleteProfileImage')->whereIn('type', getTypesForRoute());
         //*********************** Update Password *************************//
-        Route::post('/update-password', 'updatePassword');
+        Route::put('/password/edit/{type}', 'updatePassword')->whereIn('type', getTypesForRoute());
         //*********************** Update Profile *************************//
-        Route::post('/update-profile', 'updateProfile');
+        Route::put('/profile/edit/{type}', 'updateProfile')->whereIn('type', getTypesForRoute());
         //*********************** Update Profile *************************//
-        Route::post('/video', 'getVideo');
+        Route::get('/video/{type}', 'getVideo')->whereIn('type', getTypesForRoute());
 
     });
 

@@ -23,7 +23,6 @@ class StatusClinicRequest extends FormRequest
     {
         return [
             'status' => 'bail|required|boolean',
-            'clinic_id' => 'bail|required|int|exists:clinics,id',
         ];
     }
 }

@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Api\Doctor\Clinic;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Clinic\CreateClinicRequest;
-use App\Http\Requests\Api\Clinic\DeleteClinicAssistantRequest;
-use App\Http\Requests\Api\Clinic\DeleteClinicImageRequest;
-use App\Http\Requests\Api\Clinic\GetClinicAssistantRequest;
 use App\Http\Requests\Api\Clinic\StatusClinicRequest;
-use App\Http\Requests\Api\Clinic\UpdateClinicAssistantRequest;
 use App\Http\Requests\Api\Clinic\UpdateClinicImageRequest;
 use App\Http\Requests\Api\Clinic\UpdateClinicRequest;
 use App\Interfaces\Api\Doctor\Clinic\ClinicInterface;
@@ -29,49 +25,49 @@ class ClinicController extends Controller
         return $this->Clinic->addClinic($request);
     }
 
-    public function updateClinic(UpdateClinicRequest $request) //Update Clinic
+    public function updateClinic(UpdateClinicRequest $request,$clinic_id) //Update Clinic
     {
-        return $this->Clinic->updateClinic($request);
+        return $this->Clinic->updateClinic($request,$clinic_id);
     }
 
-    public function statusClinic(StatusClinicRequest $request) //Update Clinic Status
+    public function statusClinic(StatusClinicRequest $request,$clinic_id) //Update Clinic Status
     {
-        return $this->Clinic->statusClinic($request);
+        return $this->Clinic->statusClinic($request,$clinic_id);
     }
 
-    public function updateClinicLogo(UpdateClinicImageRequest $request) //Update Logo
+    public function updateClinicLogo(UpdateClinicImageRequest $request,$clinic_id) //Update Logo
     {
-        return $this->Clinic->updateClinicLogo($request);
+        return $this->Clinic->updateClinicLogo($request,$clinic_id);
     }
 
-    public function deleteClinicLogo(DeleteClinicImageRequest $request) //Delete Logo
+    public function deleteClinicLogo($clinic_id) //Delete Logo
     {
-        return $this->Clinic->deleteClinicLogo($request);
+        return $this->Clinic->deleteClinicLogo($clinic_id);
     }
 
-    public function updateClinicAssistant(UpdateClinicAssistantRequest $request) // Update Assistant
+    public function updateClinicAssistant($clinic_id,$assistant_id) // Update Assistant
     {
-        return $this->Clinic->updateClinicAssistant($request);
+        return $this->Clinic->updateClinicAssistant($clinic_id,$assistant_id);
     }
 
-    public function getClinicAssistantRequests(GetClinicAssistantRequest $request) //Get Clinic Assistant Request
+    public function getClinicAssistantRequests($clinic_id) //Get Clinic Assistant Request
     {
-        return $this->Clinic->getClinicAssistantRequests($request);
+        return $this->Clinic->getClinicAssistantRequests($clinic_id);
     }
 
-    public function deleteClinicAssistantRequest(DeleteClinicAssistantRequest $request) // Delete Clinic Assistant Request
+    public function deleteClinicAssistantRequest($clinic_id,$request_id) // Delete Clinic Assistant Request
     {
-        return $this->Clinic->deleteClinicAssistantRequest($request);
+        return $this->Clinic->deleteClinicAssistantRequest($clinic_id,$request_id);
     }
 
-    public function getClinicAssistant(GetClinicAssistantRequest $request)  // Get Assistant
+    public function getClinicAssistant($clinic_id)  // Get Assistant
     {
-        return $this->Clinic->getClinicAssistant($request);
+        return $this->Clinic->getClinicAssistant($clinic_id);
     }
 
-    public function deleteClinicAssistant(GetClinicAssistantRequest $request) // Delete Clinic Assistant
+    public function deleteClinicAssistant($clinic_id) // Delete Clinic Assistant
     {
-        return $this->Clinic->deleteClinicAssistant($request);
+        return $this->Clinic->deleteClinicAssistant($clinic_id);
     }
 
 }

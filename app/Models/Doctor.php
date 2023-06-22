@@ -53,7 +53,7 @@ class Doctor extends Authenticatable implements JWTSubject
         return $this->belongsTo(Governorate::class,'governorate_id');
     }
 
-    public function clinic()
+    public function clinics()
     {
         return $this->hasMany(Clinic::class,'owner_id');
     }

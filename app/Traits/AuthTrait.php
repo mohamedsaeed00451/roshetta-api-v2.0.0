@@ -53,8 +53,8 @@ trait AuthTrait
 
     public function getSpecialist($id,$type)
     {
-        $specialist = $this->getModel($type)->find($id)->specialist()->select('name_' . $this->getLangLocal() . ' as name')->get();
-        return $specialist[0]['name'];
+        $specialist = $this->getModel($type)->find($id)->specialist()->select('name_' . $this->getLangLocal() . ' as name')->first();
+        return $specialist['name'];
     }
 
     public function getUserGender($user_id, $type)

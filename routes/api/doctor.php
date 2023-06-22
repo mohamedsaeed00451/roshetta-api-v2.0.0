@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Doctor\Clinic\ClinicController;
+use App\Http\Controllers\Api\Doctor\DoctorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,30 +26,39 @@ Route::group([
     //*********************** Clinic *************************//
     Route::controller(ClinicController::class)->group(function (){
 
-        //*********************** Create Clinic *************************//
-        Route::post('/clinic/create', 'addClinic');
-        //*********************** Update Clinic *************************//
-        Route::post('/clinic/update', 'updateClinic');
-        //*********************** Change Clinic Status *************************//
-        Route::post('/clinic/status', 'statusClinic');
-        //*********************** Update Clinic logo *************************//
-        Route::post('/clinic/logo/update', 'updateClinicLogo');
-        //*********************** Update Clinic logo *************************//
-        Route::post('/clinic/logo/delete', 'deleteClinicLogo');
+
+            //*********************** Create Clinic *************************//
+            Route::post('/clinic', 'addClinic');
+            //*********************** Update Clinic *************************//
+            Route::put('/clinic/{id}/edit', 'updateClinic');
+            //*********************** Change Clinic Status *************************//
+            Route::put('/clinic/{id}/status', 'statusClinic');
+            //*********************** Update Clinic logo *************************//
+            Route::post('/clinic/{id}/edit/logo', 'updateClinicLogo');
+            //*********************** Update Clinic logo *************************//
+            Route::delete('/clinic/{id}/delete/logo', 'deleteClinicLogo');
 
 
-        //*********************** Update Clinic Assistant *************************//
-        Route::post('/clinic/assistant/update', 'updateClinicAssistant');
-        //*********************** Get Clinic Assistant Request *************************//
-        Route::post('/clinic/assistant/request', 'getClinicAssistantRequests');
-        //*********************** Delete Clinic Assistant Request *************************//
-        Route::post('/clinic/assistant/delete-request', 'deleteClinicAssistantRequest');
-        //*********************** Get Clinic Assistant *************************//
-        Route::post('/clinic/assistant', 'getClinicAssistant');
-        //*********************** Delete Clinic Assistant *************************//
-        Route::post('/clinic/assistant/delete', 'deleteClinicAssistant');
+            //*********************** Update Clinic Assistant *************************//
+            Route::put('/clinic/{id}/assistant/{assistant_id}/edit', 'updateClinicAssistant');
+            //*********************** Get Clinic Assistant Request *************************//
+            Route::get('/clinic/{id}/assistant/request', 'getClinicAssistantRequests');
+            //*********************** Delete Clinic Assistant Request *************************//
+            Route::delete('/clinic/{id}/assistant/delete-request/{request_id}', 'deleteClinicAssistantRequest');
+            //*********************** Get Clinic Assistant *************************//
+            Route::get('/clinic/{id}/assistant', 'getClinicAssistant');
+            //*********************** Delete Clinic Assistant *************************//
+            Route::delete('/clinic/{id}/assistant/delete', 'deleteClinicAssistant');
 
+    });
 
+    //*********************** Doctor  *************************//
+    Route::controller(DoctorController::class)->group(function (){
+
+        //*********************** Get Clinic  *************************//
+        Route::get('/clinics', 'getClinics');
+        //*********************** Get Assistants  *************************//
+        Route::get('/assistants', 'getAssistants');
 
     });
 

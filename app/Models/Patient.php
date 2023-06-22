@@ -47,6 +47,11 @@ class Patient extends Authenticatable implements JWTSubject
         return $this->belongsTo(Governorate::class,'governorate_id');
     }
 
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class,'patient_id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

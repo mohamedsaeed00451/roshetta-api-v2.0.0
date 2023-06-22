@@ -21,17 +21,9 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        $data = [
-            'type' => 'bail|required|in:admin,doctor,patient,assistant,pharmacist',
+        return [
+            'ssd' => 'bail|required|regex:/^[1-9]\d{13}$/|exists:'.$this->type.'s'.',ssd',
+            'password' => 'bail|required|string'
         ];
-
-        if ($this->type != null && in_array($this->type,['admin','doctor','patient','assistant','pharmacist'])) {
-
-            $data['ssd'] = 'bail|required|regex:/^[1-9]\d{13}$/|exists:'.$this->type.'s'.',ssd';
-            $data['password'] = 'bail|required|string';
-
-        }
-
-        return $data;
     }
 }

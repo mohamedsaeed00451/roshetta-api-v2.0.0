@@ -61,13 +61,13 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function updateClinic($request)
+    public function updateClinic($request,$clinic_id)
     {
         // TODO: Implement updateClinic() method.
 
         try {
 
-            if (!$clinic = $this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$clinic = $this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
             $clinic->update([
@@ -97,13 +97,13 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function statusClinic($request)
+    public function statusClinic($request,$clinic_id)
     {
         // TODO: Implement statusClinic() method.
 
         try {
 
-            if (!$clinic = $this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$clinic = $this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
             $status = false;
@@ -121,13 +121,13 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function updateClinicLogo($request)
+    public function updateClinicLogo($request,$clinic_id)
     {
         // TODO: Implement updateClinicLogo() method.
 
         try {
 
-            if (!$clinic = $this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$clinic = $this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
             $this->deleteImage('images/place/', $clinic->logo); //Delete Old Image
@@ -149,13 +149,13 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function deleteClinicLogo($request)
+    public function deleteClinicLogo($clinic_id)
     {
         // TODO: Implement deleteClinicLogo() method.
 
         try {
 
-            if (!$clinic = $this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$clinic = $this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
             $this->deleteImage('images/place/', $clinic->logo);  //Delete Old Image
@@ -171,16 +171,18 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function updateClinicAssistant($request)
+    public function updateClinicAssistant($clinic_id,$assistant_id)
     {
         // TODO: Implement updateClinicAssistant() method.
 
         try {
 
-            if (!$clinic = $this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$clinic = $this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
-            $assistant = Assistant::find($request->assistant_id);
+            $assistant = Assistant::find($assistant_id);
+            if (!$assistant)
+                return $this->responseMessage(400, false, __('messages_trans.error'));
 
             if ($check = $this->getAssistantClinicRquests($clinic, $assistant))
                 return $check;
@@ -212,13 +214,13 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function getClinicAssistantRequests($request)
+    public function getClinicAssistantRequests($clinic_id)
     {
         // TODO: Implement getClinicAssistantRequests() method.
 
         try {
 
-            if (!$clinic = $this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$clinic = $this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
             $getClinicRequest = $clinic->clinicRequests()->first();
@@ -250,17 +252,17 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function deleteClinicAssistantRequest($request)
+    public function deleteClinicAssistantRequest($clinic_id,$request_id)
     {
         // TODO: Implement deleteClinicAssistantRequest() method.
 
         try {
 
-            if (!$this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
-            $delete = AssistantClinicRequest::where('id', $request->request_id)
-                ->where('clinic_id', $request->clinic_id)
+            $delete = AssistantClinicRequest::where('id', $request_id)
+                ->where('clinic_id', $clinic_id)
                 ->delete();
 
             if (!$delete)
@@ -274,16 +276,16 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function getClinicAssistant($request)
+    public function getClinicAssistant($clinic_id)
     {
         // TODO: Implement getClinicAssistant() method.
 
         try {
 
-            if (!$this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
-            $assistant = $this->getAssistant($request->clinic_id);
+            $assistant = $this->getAssistant($clinic_id);
 
             return $this->responseMessage(200, true, __('messages_trans.success'),$assistant);
 
@@ -293,13 +295,13 @@ class ClinicRepository implements ClinicInterface
 
     }
 
-    public function deleteClinicAssistant($request)
+    public function deleteClinicAssistant($clinic_id)
     {
         // TODO: Implement deleteClinicAssistant() method.
 
         try {
 
-            if (!$clinic = $this->getClinic(auth()->user(), $request->clinic_id))
+            if (!$clinic = $this->getClinic(auth()->user(), $clinic_id))
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
             $clinic->assistant_id = null;

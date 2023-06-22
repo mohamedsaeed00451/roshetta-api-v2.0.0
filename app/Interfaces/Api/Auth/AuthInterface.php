@@ -6,25 +6,25 @@ interface AuthInterface
 {
     public function register($request); // Register
 
-    public function login($request); // login
+    public function login($request,$type); // login
 
-    public function profile($request); // Get Profile
+    public function profile($type); // Get Profile
 
     public function logout(); // Logout
 
     public function refresh(); // Refresh token
 
-    public function updateProfileImage($request); // Update Profile Image
+    public function updateProfileImage($request,$type); // Update Profile Image
 
     public function deleteProfileImage(); // Delete Profile Image
 
     public function updatePassword($request); // Update Password
 
-    public function updateProfile($request); // Update Profile
+    public function updateProfile($request,$type); // Update Profile
 
-    public function resetPassword($request); // Reset Password
+    public function resetPassword($request,$type); // Reset Password
 
-    public function getVideo($request); //Get Videos
+    public function getVideo($type); //Get Videos
 
     public function getSpecialists(); //Get Specialists
 

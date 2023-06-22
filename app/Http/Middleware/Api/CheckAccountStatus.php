@@ -2,14 +2,14 @@
 
 namespace App\Http\Middleware\Api;
 
-use App\Traits\GeneralTrait;
+use App\Traits\MessageTrait;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckAccountStatus
 {
-    use GeneralTrait;
+    use MessageTrait;
     /**
      * Handle an incoming request.
      *

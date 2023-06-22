@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\Clinic;
+namespace App\Http\Requests\Api\Appointment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetClinicAssistantRequest extends FormRequest
+class AppointmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,8 +21,22 @@ class GetClinicAssistantRequest extends FormRequest
      */
     public function rules(): array
     {
+        return request()->isMethod('put') || request()->isMethod('patch') ?
+            $this->onUpdate() : $this->onCreate();
+    }
+
+    public function onCreate()
+    {
         return [
             'clinic_id' => 'bail|required|int|exists:clinics,id',
+            'date' => 'bail|required|date_format:Y-m-d|after_or_equal:'.date('Y-m-d').''
+        ];
+    }
+
+    public function onUpdate()
+    {
+        return [
+            'date' => 'bail|required|date_format:Y-m-d|after_or_equal:'.date('Y-m-d').''
         ];
     }
 }

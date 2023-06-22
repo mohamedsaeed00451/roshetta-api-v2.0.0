@@ -21,9 +21,7 @@ class UpdateProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $data = [
-            'type' => 'bail|required|in:admin,doctor,patient,assistant,pharmacist',
-        ];
+        $data = [];
 
         if ($this->type != null && in_array($this->type,['admin','doctor','patient','assistant','pharmacist'])) {
 

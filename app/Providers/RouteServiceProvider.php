@@ -61,5 +61,9 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         });
+
+        Route::pattern('id','[0-9]+');
+        Route::pattern('assistant_id','[0-9]+');
+        Route::pattern('request_id','[0-9]+');
     }
 }

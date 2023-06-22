@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Api\Auth;
 
+use App\Events\Api\LoginNotificationEvent;
 use App\Interfaces\Api\Auth\AuthInterface;
-use App\Mail\Api\Auth\LoginAlertEmail;
 use App\Mail\Api\Auth\RegisterEmail;
 use App\Mail\Api\Auth\ResetPasswordEmail;
 use App\Models\Gender;
@@ -92,7 +92,7 @@ class AuthRepository implements AuthInterface
 
     }
 
-    public function login($request)
+    public function login($request,$type)
     {
         // TODO: Implement login() method.
 
@@ -100,10 +100,10 @@ class AuthRepository implements AuthInterface
 
             $credentials = $request->only(['ssd', 'password']);
 
-            if (!$token = auth($request->type)->attempt($credentials))
+            if (!$token = auth($type)->attempt($credentials))
                 return $this->responseMessage(400, false, __('messages_trans.ssd_password'));
 
-            $user = auth($request->type)->user();
+            $user = auth($type)->user();
 
             if ($user->account_enable != 1) // check Acount Is Enable
                 return $this->responseMessage(400, false, 'الحساب الخاص بك معطل الرجاء التواصل مع المشرف');
@@ -114,24 +114,20 @@ class AuthRepository implements AuthInterface
             $user->account_run = 1;
             $user->save();
 
-            if ($request->type == 'doctor')
-                $user->specialist = $this->getSpecialist($user->id, $request->type);
+            if ($type == 'doctor')
+                $user->specialist = $this->getSpecialist($user->id, $type);
 
             $user->age = $this->calculateAge($user->birth_date);
-            $user->governorate = $this->getGovernorate($user->id, $request->type);
-            $user->gender = $this->getUserGender($user->id, $request->type);
+            $user->governorate = $this->getGovernorate($user->id, $type);
+            $user->gender = $this->getUserGender($user->id, $type);
             $user->join_at = getDateTimeFormat($user->created_at);
             $user->image = $this->getPath('profile', $user->image);
-            $user->type = $request->type;
+            $user->type = $type;
             $user->access_token = $token;
             $user->token_type = 'bearer';
             $user->expires_in = auth()->factory()->getTTL() * 60;
 
-            try {
-                Mail::to($user->email)->send(new LoginAlertEmail($user->name, $request->type));
-            } catch (\Exception $e) {
-                //
-            }
+            event(new LoginNotificationEvent($user)); // Send Alert Login Email
 
             return $this->responseMessage(200, true, __('messages_trans.login'), $user);
 
@@ -141,18 +137,18 @@ class AuthRepository implements AuthInterface
 
     }
 
-    public function profile($request)
+    public function profile($type)
     {
         // TODO: Implement profile() method.
         try {
 
             $user = auth()->user();
             if ($user->specialist_id)
-                $user->specialist = $this->getSpecialist($user->id, $request->type);
+                $user->specialist = $this->getSpecialist($user->id, $type);
 
             $user->age = $this->calculateAge($user->birth_date);
-            $user->governorate = $this->getGovernorate($user->id, $request->type);
-            $user->gender = $this->getUserGender($user->id, $request->type);
+            $user->governorate = $this->getGovernorate($user->id, $type);
+            $user->gender = $this->getUserGender($user->id, $type);
             $user->join_at = getDateTimeFormat($user->created_at);
             $user->image = $this->getPath('profile', $user->image);
 
@@ -193,7 +189,7 @@ class AuthRepository implements AuthInterface
 
     }
 
-    public function updateProfileImage($request)
+    public function updateProfileImage($request,$type)
     {
         // TODO: Implement updateProfileImage() method.
 
@@ -201,12 +197,12 @@ class AuthRepository implements AuthInterface
 
             $user = auth()->user();
             $this->deleteImage('images/profile/', $user->image); //Delete Old Image
-            $add_image = $this->addImage('images/profile/' . $request->type . '/' . $user->email, $request->file('photo'));
+            $add_image = $this->addImage('images/profile/' . $type . '/' . $user->email, $request->file('photo'));
 
             if (!$add_image)
                 return $this->responseMessage(400, false, __('messages_trans.error'));
 
-            $user->image = $request->type . '/' . $user->email . '/' . $add_image;
+            $user->image = $type . '/' . $user->email . '/' . $add_image;
             $user->save();
 
             $image = $this->getPath('profile', $user->image);
@@ -256,7 +252,7 @@ class AuthRepository implements AuthInterface
 
     }
 
-    public function updateProfile($request)
+    public function updateProfile($request,$type)
     {
         // TODO: Implement updateProfile() method.
 
@@ -269,21 +265,21 @@ class AuthRepository implements AuthInterface
                 $user->weight = $request->weight;
                 $user->height = $request->height;
             }
-            if ($request->type == 'doctor') {
+            if ($type == 'doctor') {
                 if ($request->brief != null)
                     $user->brief = $request->brief;
             }
             $user->save();
 
-            if ($request->type == 'doctor') {
-                $user->specialist = $this->getDoctorSpecialist($user->id);
+            if ($type == 'doctor') {
+                $user->specialist = $this->getSpecialist($user->id,$type);
             }
 
             $user->age = $this->calculateAge($user->birth_date);
             $user->governorate = $this->getGovernorate($user->id, $request->type);
             $user->gender = $this->getUserGender($user->id, $request->type);
             $user->image = $this->getPath('profile', $user->image);
-            $user->type = $request->type;
+            $user->type = $type;
 
             return $this->responseMessage(201, true, __('messages_trans.update'), $user);
 
@@ -293,7 +289,7 @@ class AuthRepository implements AuthInterface
 
     }
 
-    public function resetPassword($request)
+    public function resetPassword($request,$type)
     {
         // TODO: Implement resetPassword() method.
 
@@ -304,7 +300,7 @@ class AuthRepository implements AuthInterface
             if (!$otpVerify->status)
                 return $this->responseMessage(401, false, $otpVerify->message);
 
-            $user = $this->getModel($request->type)->where('email', $request->email)->first();
+            $user = $this->getModel($type)->where('email', $request->email)->first();
             $user->password = Hash::make($request->password);
             $user->save();
 
@@ -316,12 +312,12 @@ class AuthRepository implements AuthInterface
 
     }
 
-    public function getVideo($request)
+    public function getVideo($type)
     {
         // TODO: Implement getVideo() method.
 
         try {
-            $video = Video::where('type', $request->type)->first();
+            $video = Video::where('type', $type)->first();
             $video->video = $this->getPath('video', $video->video);
             return $this->responseMessage(200, true, __('messages_trans.success'), $video);
 

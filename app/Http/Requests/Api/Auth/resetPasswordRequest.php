@@ -21,18 +21,11 @@ class resetPasswordRequest extends FormRequest
      */
     public function rules(): array
     {
-        $data = [
-            'type' => 'bail|required|in:admin,doctor,patient,assistant,pharmacist',
+        return [
+            'password' => 'bail|required|string|min:8|confirmed',
+            'email' => 'bail|required|string|email|ends_with:gmail.com|exists:' . $this->type . 's' . ',email',
+            'otp' => 'bail|required|min:6|max:6|regex:/^[0-9]*$/i'
         ];
-
-        if ($this->type != null && in_array($this->type,['admin','doctor','patient','assistant','pharmacist'])) {
-
-            $data['password'] = 'bail|required|string|min:8|confirmed';
-            $data['email'] = 'bail|required|string|email|ends_with:gmail.com|exists:'.$this->type.'s'.',email';
-            $data['otp'] = 'bail|required|min:6|max:6|regex:/^[0-9]*$/i';
-        }
-
-        return $data;
 
     }
 }

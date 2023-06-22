@@ -22,7 +22,6 @@ class UpdateClinicImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'clinic_id' => 'bail|required|int|exists:clinics,id',
             'logo' => 'bail|required|image|max:2000'
         ];
     }

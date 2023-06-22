@@ -12,3 +12,8 @@ function getDateTimeFormat($dateTime) //Format Date Time Type [AM , PM]
 
     return $finalFormat;
 }
+
+function getTypesForRoute() //Get Type
+{
+    return ['admin','doctor','patient','assistant','pharmacist'];
+}

@@ -50,6 +50,11 @@ class Assistant extends Authenticatable implements JWTSubject
         return $this->hasMany(AssistantClinicRequest::class,'assistant_id');
     }
 
+    public function clinics()
+    {
+        return $this->hasMany(Clinic::class,'assistant_id');
+    }
+
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

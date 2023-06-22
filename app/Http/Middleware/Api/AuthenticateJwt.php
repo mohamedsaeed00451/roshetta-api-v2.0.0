@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware\Api;
 
-use App\Traits\GeneralTrait;
+use App\Traits\MessageTrait;
 use Closure;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthenticateJwt
 {
-    use GeneralTrait;
+    use MessageTrait;
 
     /**
      * Handle an incoming request.
@@ -22,6 +22,7 @@ class AuthenticateJwt
         if ($guard != null) {
 
             try {
+
                 auth()->shouldUse($guard);
                 $user = JWTAuth::parseToken()->authenticate($request);
 
@@ -40,16 +41,14 @@ class AuthenticateJwt
         } else {
 
             try {
+                    //************* Get Guard From URL ******************//
+                $url = $request->fullurl();
+                $path = parse_url($url,PHP_URL_PATH);
+                $segments = explode('/',$path);
+                $guard = end($segments);
 
-                $rules = [
-                    'type' => 'bail|required|in:admin,doctor,patient,assistant,pharmacist',
-                ];
-                $validation = validator::make($request->all(), $rules);
-                if ($validation->fails())
-                    return $this->responseMessage(400, false, 'type error', $validation->messages());
-
-                auth()->shouldUse($request->type);
-                $user = JWTAuth::parseToken()->authenticate();
+                auth()->shouldUse($guard);
+                $user = JWTAuth::parseToken()->authenticate($request);
 
             } catch (\Exception $e) {
 

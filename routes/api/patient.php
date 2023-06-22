@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Patient\Appointment\AppointmentController;
+use App\Http\Controllers\Api\Patient\PatientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +20,31 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
 
-    'prefix' => 'patient',
-    'middleware' => ['patient', 'check.language', 'check.api.password', 'jwt.verify:patient']
+    'middleware' => ['patient', 'check.language', 'check.api.password', 'jwt.verify:patient','check.account.status']
 
 ], function () {
 
+    //*********************** Appointments  *************************//
+    Route::controller(AppointmentController::class)->group(function (){
 
+        //*********************** Add Appointment  *************************//
+        Route::post('/appointment', 'store');
+        //*********************** Get Appointment  *************************//
+        Route::get('/appointments', 'index');
+        //*********************** Update Appointment  *************************//
+        Route::put('/appointment/{id}/edit', 'update');
+        //*********************** Update Appointment  *************************//
+        Route::delete('/appointment/{id}/delete', 'destroy');
+
+    });
+
+    //*********************** Patient  *************************//
+    Route::controller(PatientController::class)->group(function (){
+
+        //*********************** Get Clinics  *************************//
+        Route::get('/clinics', 'getClinics');
+
+
+    });
 
 });

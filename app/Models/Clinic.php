@@ -61,5 +61,10 @@ class Clinic extends Model
         return $this->hasMany(AssistantClinicRequest::class,'clinic_id');
     }
 
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class,'clinic_id');
+    }
+
 
 }

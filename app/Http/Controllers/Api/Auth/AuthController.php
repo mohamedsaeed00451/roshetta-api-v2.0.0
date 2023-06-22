@@ -29,14 +29,14 @@ class AuthController extends Controller
         return $this->Auth->register($request);
     }
 
-    public function login(LoginRequest $request) // login
+    public function login(LoginRequest $request,$type) // login
     {
-        return $this->Auth->login($request);
+        return $this->Auth->login($request,$type);
     }
 
-    public function profile(Request $request) // Get Profile
+    public function profile($type) // Get Profile
     {
-        return $this->Auth->profile($request);
+        return $this->Auth->profile($type);
     }
 
     public function logout() // Logout
@@ -49,9 +49,9 @@ class AuthController extends Controller
         return $this->Auth->refresh();
     }
 
-    public function updateProfileImage(UpdateImageRequest $request) // Update Profile Image
+    public function updateProfileImage(UpdateImageRequest $request,$type) // Update Profile Image
     {
-        return $this->Auth->updateProfileImage($request);
+        return $this->Auth->updateProfileImage($request,$type);
     }
 
     public function deleteProfileImage() // Delete Profile Image
@@ -64,19 +64,19 @@ class AuthController extends Controller
         return $this->Auth->updatePassword($request);
     }
 
-    public function updateProfile(UpdateProfileRequest $request) // Update Profile
+    public function updateProfile(UpdateProfileRequest $request,$type) // Update Profile
     {
-        return $this->Auth->updateProfile($request);
+        return $this->Auth->updateProfile($request,$type);
     }
 
-    public function resetPassword(resetPasswordRequest $request) // Reset Password
+    public function resetPassword(resetPasswordRequest $request,$type) // Reset Password
     {
-        return $this->Auth->resetPassword($request);
+        return $this->Auth->resetPassword($request,$type);
     }
 
-    public function getVideo(Request $request) //Get Videos
+    public function getVideo($type) //Get Videos
     {
-        return $this->Auth->getVideo($request);
+        return $this->Auth->getVideo($type);
     }
 
     public function getSpecialists() //Get Specialists
