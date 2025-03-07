@@ -65,5 +65,6 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id','[0-9]+');
         Route::pattern('assistant_id','[0-9]+');
         Route::pattern('request_id','[0-9]+');
+        Route::pattern('appointment_id','[0-9]+');
     }
 }

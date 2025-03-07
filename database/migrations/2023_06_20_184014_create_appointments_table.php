@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->date('date')->comment('موعد الحجز');
-            $table->boolean('status')->default(false)->comment('حالة الحجز');
+            $table->enum('status',[0,1,2])->default(0)->comment('(0 => فى الانتظار) , (1 => تم التحويل للدكتور) , (2 => تم الكشف بنجاح)');
             $table->foreignId('patient_id')->constrained('patients')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('clinic_id')->constrained('clinics')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();

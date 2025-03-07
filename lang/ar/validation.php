@@ -146,7 +146,13 @@ return [
     |
     */
 
-    'attributes' => [
+    'attributes' => attributesAR()
+
+];
+
+function attributesAR()
+{
+    $attributes = [
         'name' => 'الاسم',
         'email' => 'البريد الالكترونى',
         'password' => 'كلمة المرور',
@@ -171,7 +177,28 @@ return [
         'status' => 'الحالة',
         'clinic_id' => 'معرف العيادة',
         'logo' => 'الشعار',
-        'date' => 'التاريخ'
-    ],
+        'date' => 'التاريخ',
+        'disease_name' => 'التشخيص',
+        'disease_place' => 'مكان الاصابة',
+        'medicines' => 'الادوية',
+        'disease_id' => 'معرف التشخيص',
+        'appointment_id' => 'معرف الموعد',
+        '' => '',
+        '' => '',
+        '' => '',
+        '' => '',
+        '' => '',
+        '' => '',
+    ];
 
-];
+    if (count(request('medicines')) > 0) {
+        for ($i = 0; $i < count(request('medicines')); $i++) {
+            $attributes['medicines.'.$i.'.name'] = 'اسم الدواء'.' ('.$i.')'.'';
+            $attributes['medicines.'.$i.'.size'] = 'حجم الدواء'.' ('.$i.')'.'';
+            $attributes['medicines.'.$i.'.duration'] = 'مدة الدواء'.' ('.$i.')'.'';
+            $attributes['medicines.'.$i.'.description'] = 'وصف الدواء'.' ('.$i.')'.'';
+        }
+    }
+
+    return $attributes;
+}

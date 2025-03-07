@@ -2,9 +2,11 @@
 
 namespace App\Providers\Api;
 
+use App\Interfaces\Api\Assistant\AssistantInterface;
 use App\Interfaces\Api\Auth\AuthInterface;
 use App\Interfaces\Api\Doctor\Clinic\ClinicInterface;
 use App\Interfaces\Api\Patient\Appointment\AppointmentInterface;
+use App\Repositories\Api\Assistant\AssistantRepository;
 use App\Repositories\Api\Auth\AuthRepository;
 use App\Repositories\Api\Doctor\Clinic\ClinicRepository;
 use App\Repositories\Api\Patient\Appointment\AppointmentRepository;
@@ -23,6 +25,8 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->bind(ClinicInterface::class,ClinicRepository::class);
         //****************** Appointment ******************//
         $this->app->bind(AppointmentInterface::class,AppointmentRepository::class);
+        //****************** Assistant ******************//
+        $this->app->bind(AssistantInterface::class,AssistantRepository::class);
     }
 
     /**

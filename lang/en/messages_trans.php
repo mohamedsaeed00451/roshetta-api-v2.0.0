@@ -56,6 +56,12 @@ return [
     'delete_appoint' => 'تم حذف الحجز بنجاح',
 
 
+    // **************** Assistant ****************//
+    'max_assistant_clinic' => 'لا يكنك الانضمام لاكثر من عيادتين',
+    'clinic_found_assistant' => 'هذة العيادة لديها مساعد بالفعل',
+    'join_clinic_success' => 'تم الانضمام للعيادة بنجاح',
+    'change_appoint_status_failed' => 'تم تحويل المريض للدكتور من قبل',
+    'change_appoint_status_success' => 'تم تحويل المريض للدكتور بنجاح',
 
     '' => '',
     '' => '',

@@ -59,6 +59,8 @@ Route::group([
         Route::get('/clinics', 'getClinics');
         //*********************** Get Assistants  *************************//
         Route::get('/assistants', 'getAssistants');
+        //*********************** Add Prescript *************************//
+        Route::post('/clinic/{id}/prescript', 'addPrescriptMedicines');
 
     });
 

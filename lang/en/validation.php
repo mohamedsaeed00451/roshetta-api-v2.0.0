@@ -179,10 +179,28 @@ return [
     |
     */
 
-    'attributes' => [
+    'attributes' => attributesEN()
+
+];
+
+function attributesEN()
+{
+    $attributes = [
+        'medicines' => 'medicines',
         'gender_id' => 'gender',
         'governorate_id' => 'governorate',
         'specialist_id' => 'specialist',
-    ],
+    ];
 
-];
+    if (count(request('medicines')) > 0) {
+        for ($i = 0; $i < count(request('medicines')); $i++) {
+            $attributes['medicines.'.$i.'.name'] = 'medicine name'.' ('.$i.')'.'';
+            $attributes['medicines.'.$i.'.size'] = 'medicine size'.' ('.$i.')'.'';
+            $attributes['medicines.'.$i.'.duration'] = 'medicine duration'.' ('.$i.')'.'';
+            $attributes['medicines.'.$i.'.description'] = 'medicine description'.' ('.$i.')'.'';
+        }
+    }
+
+    return $attributes;
+}
+

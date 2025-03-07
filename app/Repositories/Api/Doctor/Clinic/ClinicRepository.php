@@ -226,7 +226,7 @@ class ClinicRepository implements ClinicInterface
             $getClinicRequest = $clinic->clinicRequests()->first();
 
             if (!$getClinicRequest)
-                return $this->responseMessage(400, false, __('messages_trans.no_data'));
+                return $this->responseMessage(204, true, __('messages_trans.no_data'));
 
             $assistant = Assistant::find($getClinicRequest['assistant_id']);
 

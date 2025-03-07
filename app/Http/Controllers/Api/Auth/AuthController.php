@@ -101,7 +101,7 @@ class AuthController extends Controller
 
     public function sendPhoneOtpVerification(Request $request) // Send Phone Verification Code
     {
-        return $this->Auth->sendEmailOtpVerification($request);
+        return $this->Auth->sendPhoneOtpVerification($request);
     }
 
 }

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Otp;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 
 class AuthRepository implements AuthInterface
 {
@@ -404,18 +406,29 @@ class AuthRepository implements AuthInterface
         // TODO: Implement sendPhoneOtpVerification() method.
 
         try {
-            $rules = [
-                'phone' => 'bail|required|string'
-            ];
-
-            $validation = validator::make($request->all(), $rules);
-
-            if ($validation->fails())
-                return $this->responseMessage(400, false, __('messages_trans.error'), ['error' => $validation->messages()]);
+//            $rules = [
+//                'phone' => 'bail|required|string'
+//            ];
+//
+//            $validation = validator::make($request->all(), $rules);
+//
+//            if ($validation->fails())
+//                return $this->responseMessage(400, false, __('messages_trans.error'), ['error' => $validation->messages()]);
 
             //send code
+            $messaging = app('firebase.messaging');
 
-            return $this->responseMessage(200, true, __('messages_trans.verification'));
+            $message = CloudMessage::withTarget('phone_number', '+201092338086')
+                ->withNotification(Notification::create('New SMS', 'اول رساله'))
+                ->withData(['key' => 'value']);
+
+            $trySend = $messaging->send($message);
+
+            if ($trySend) {
+                return $this->responseMessage(200, true, __('messages_trans.verification'));
+            }
+
+            return $this->responseMessage(400, true, 'no');
 
         } catch (\Exception $e) {
             return $this->responseMessage(400, false, $e->getMessage());
